@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="CV — Mihaja Herinjaka Rasolo, Fullstack Developer : Laravel, Vue.js, IA.">
+<title>Mihaja Herinjaka Rasolo — Fullstack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf7f2;
+    --paper-deep:#f2ede4;
+    --ink:#191614;
+    --ink-soft:#4a443e;
+    --ink-faint:#8a8178;
+    --rule:#ddd5c8;
+    --accent:#9c3d1f;
+    --accent-wash:#f0e3da;
+
+    --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+    --sans:"IBM Plex Sans", "Helvetica Neue", Helvetica, sans-serif;
+    --mono:"IBM Plex Mono", "SF Mono", Menlo, monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    background:#e7e1d6;
+    font-family:var(--sans);
+    color:var(--ink);
+    font-size:10.2pt;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 16px;
+  }
+
+  .sheet{
+    width:210mm;
+    min-height:297mm;
+    margin:0 auto 24px;
+    background:var(--paper);
+    padding:9mm 14mm 7mm;
+    position:relative;
+    box-shadow:0 18px 50px -20px rgba(25,22,20,.45), 0 2px 6px rgba(25,22,20,.08);
+    /* subtle paper grain */
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(156,61,31,.045), transparent 42%),
+      radial-gradient(circle at 88% 96%, rgba(25,22,20,.04), transparent 46%);
+  }
+
+  /* ── Header ───────────────────────────────────────── */
+  .masthead{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:end;
+    gap:12mm;
+    padding-bottom:3.5mm;
+    border-bottom:2.5px solid var(--ink);
+  }
+
+  .name{
+    font-family:var(--serif);
+    font-weight:400;
+    font-size:22.5pt;
+    line-height:.94;
+    letter-spacing:-.02em;
+  }
+  .name .sur{ display:block; font-weight:400; text-transform:uppercase; letter-spacing:.06em; font-size:.82em; color:var(--accent); }
+
+  .role{
+    margin-top:2.6mm;
+    font-family:var(--mono);
+    font-size:7.8pt;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .role b{ color:var(--ink); font-weight:500; }
+
+  .contact{
+    text-align:right;
+    font-size:8.8pt;
+    line-height:1.65;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .contact a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--rule); }
+  .contact .lbl{
+    font-family:var(--mono);
+    font-size:6.8pt;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-right:6px;
+  }
+
+  .tenure{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:1.8mm 0 0;
+    font-family:var(--mono);
+    font-size:7.6pt;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    border-bottom:1px solid var(--rule);
+    padding-bottom:1.8mm;
+  }
+  .tenure span b{ color:var(--accent); font-weight:500; }
+
+  /* ── Body grid ────────────────────────────────────── */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 62mm;
+    gap:0 10mm;
+    margin-top:4mm;
+  }
+  .rail{ border-left:1px solid var(--rule); padding-left:9mm; margin-left:2mm; }
+
+  h2{
+    font-family:var(--mono);
+    font-size:7.6pt;
+    font-weight:500;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:2.6mm;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h2::after{ content:""; flex:1; height:1px; background:var(--rule); }
+
+  section + section{ margin-top:3.2mm; }
+
+  /* ── Profil ───────────────────────────────────────── */
+  .profil p{
+    font-family:var(--serif);
+    font-size:9.1pt;
+    line-height:1.3;
+    color:var(--ink-soft);
+  }
+  .profil p + p{ margin-top:1.5mm; }
+  .profil strong{ color:var(--ink); font-weight:500; }
+  .profil .lede{
+    font-size:9.9pt;
+    color:var(--ink);
+  }
+  .profil .lede::first-letter{
+    font-size:22pt;
+    line-height:.78;
+    float:left;
+    padding:2px 6px 0 0;
+    color:var(--accent);
+    font-weight:400;
+  }
+
+  /* ── Expérience ───────────────────────────────────── */
+  .job{ position:relative; padding-left:6mm; }
+  .job + .job{ margin-top:2.4mm; }
+  .job::before{
+    content:"";
+    position:absolute; left:0; top:1.9mm;
+    width:5px; height:5px;
+    background:var(--accent);
+    transform:rotate(45deg);
+  }
+  .job::after{
+    content:"";
+    position:absolute; left:2px; top:5mm; bottom:-3mm;
+    width:1px; background:var(--rule);
+  }
+  .job:last-child::after{ display:none; }
+
+  .job-head{ display:flex; justify-content:space-between; align-items:baseline; gap:5mm; }
+  .job-title{ flex:1 1 auto; }
+  .job-title{
+    font-family:var(--serif);
+    font-size:11.2pt;
+    font-weight:500;
+    line-height:1.2;
+    letter-spacing:-.01em;
+  }
+  .job-title em{
+    font-family:var(--sans);
+    font-style:normal;
+    font-weight:600;
+    font-size:8.9pt;
+    letter-spacing:.01em;
+    color:var(--accent);
+  }
+  .job-date{
+    font-family:var(--mono);
+    font-size:7.4pt;
+    letter-spacing:.06em;
+    color:var(--ink-faint);
+    white-space:nowrap;
+    text-align:right;
+  }
+  .job-when{ text-align:right; flex:0 0 auto; max-width:40mm; }
+  .job-meta{
+    font-size:7.8pt;
+    color:var(--ink-faint);
+    line-height:1.35;
+  }
+  .job-head{ margin-bottom:1.3mm; }
+
+  ul.bullets{ list-style:none; }
+  ul.bullets li{
+    position:relative;
+    padding-left:4.5mm;
+    color:var(--ink-soft);
+    font-size:8.5pt;
+    line-height:1.3;
+  }
+  ul.bullets li + li{ margin-top:.7mm; }
+  ul.bullets li::before{
+    content:"";
+    position:absolute; left:0; top:.55em;
+    width:2.5mm; height:1px;
+    background:var(--ink-faint);
+  }
+  ul.bullets strong{ color:var(--ink); font-weight:600; }
+
+  .stack{
+    margin-top:1.1mm;
+    font-family:var(--mono);
+    font-size:7.3pt;
+    letter-spacing:.02em;
+    color:var(--ink-faint);
+    line-height:1.6;
+  }
+  .stack span{
+    background:var(--paper-deep);
+    border:1px solid var(--rule);
+    padding:1px 5px;
+    margin-right:3px;
+    display:inline-block;
+    white-space:nowrap;
+    color:var(--ink-soft);
+  }
+
+  /* ── Rail blocks ──────────────────────────────────── */
+  .skill-group + .skill-group{ margin-top:3.4mm; }
+  .skill-group h3{
+    font-size:8.4pt;
+    font-weight:600;
+    letter-spacing:.01em;
+    margin-bottom:1.2mm;
+    color:var(--ink);
+  }
+  .skill-group p{
+    font-size:8.5pt;
+    line-height:1.5;
+    color:var(--ink-soft);
+  }
+  .skill-group .hi{
+    color:var(--accent);
+    font-weight:500;
+  }
+
+  .rail-note{
+    margin-top:2mm;
+    background:var(--accent-wash);
+    border-left:2px solid var(--accent);
+    padding:3mm 3.5mm;
+  }
+  .rail-note h3{ color:var(--accent); }
+  ul.ai-list{ list-style:none; }
+  ul.ai-list li{
+    font-size:8.3pt;
+    line-height:1.32;
+    color:var(--ink-soft);
+    padding-left:3.2mm;
+    position:relative;
+  }
+  ul.ai-list li + li{ margin-top:1.5mm; }
+  ul.ai-list li::before{
+    content:"";
+    position:absolute; left:0; top:.5em;
+    width:1.6mm; height:1px; background:var(--accent);
+  }
+  ul.ai-list b{ color:var(--ink); font-weight:600; }
+  .rail-note p{ color:var(--ink-soft); }
+
+  .lang{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    font-size:9pt;
+    padding:1.6mm 0;
+    border-bottom:1px dotted var(--rule);
+  }
+  .lang:last-child{ border-bottom:none; }
+  .lang b{ font-weight:500; }
+  .lang span{ font-family:var(--mono); font-size:7.2pt; color:var(--ink-faint); letter-spacing:.05em; text-transform:uppercase; }
+
+  .placeholder{
+    color:var(--accent);
+    background:var(--accent-wash);
+    padding:0 3px;
+    font-family:var(--mono);
+    font-size:7.4pt;
+  }
+
+  footer.foot{
+    position:absolute;
+    left:14mm; right:14mm; bottom:5mm;
+    display:flex; justify-content:space-between;
+    font-family:var(--mono);
+    font-size:6.8pt;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    border-top:1px solid var(--rule);
+    padding-top:2.5mm;
+  }
+
+  /* ── Screen-only affordances ──────────────────────── */
+  @media screen and (max-width:800px){
+    body{ padding:12px 0; }
+    .sheet{ width:100%; min-height:0; padding:22px 20px; }
+    .masthead{ grid-template-columns:1fr; gap:5mm; }
+    .contact{ text-align:left; white-space:normal; }
+    .grid{ grid-template-columns:1fr; gap:7mm; }
+    .rail{ border-left:none; border-top:1px solid var(--rule); padding-left:0; margin-left:0; padding-top:6mm; }
+    .name{ font-size:26pt; }
+    footer.foot{ position:static; margin-top:8mm; }
+  }
+
+  /* ── Print ────────────────────────────────────────── */
+  @page{ size:A4; margin:0; }
+  @media print{
+    html, body{ background:var(--paper); padding:0; }
+    .sheet{ box-shadow:none; margin:0; width:auto; min-height:295mm; padding:8mm 14mm 6mm; }
+    a{ color:inherit; }
+    .job, .skill-group, .job-head, .lang{ break-inside:avoid; page-break-inside:avoid; }
+    h2{ break-after:avoid; page-break-after:avoid; }
+    footer.foot{ position:fixed; bottom:5mm; }
+  }
+</style>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <div>
+      <h1 class="name">Mihaja Herinjaka<span class="sur">Rasolo</span></h1>
+      <p class="role">Fullstack Developer &nbsp;·&nbsp; <b>Laravel</b> &nbsp;·&nbsp; <b>Vue.js</b> &nbsp;·&nbsp; <b>IA Expert</b></p>
+    </div>
+    <div class="contact">
+      <div><span class="lbl">Mail</span><a href="mailto:xanaviarta@gmail.com">xanaviarta@gmail.com</a></div>
+      <div><span class="lbl">LinkedIn</span><a href="https://www.linkedin.com/in/mihaja-herinjaka-1595b044/">/in/mihaja-herinjaka</a></div>
+    </div>
+  </header>
+
+  <div class="tenure">
+    <span>Antananarivo, Madagascar &nbsp;—&nbsp; Télétravail / International</span>
+    <span><b>15+</b> ans d'expérience</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- ══ Colonne principale ══ -->
+    <div class="main">
+
+      <section class="profil">
+        <h2>Profil</h2>
+        <p class="lede">Développeur Full-Stack et Lead Technique, 15 ans d'expérience dans la conception et le déploiement d'applications web métier sur-mesure — SaaS, CRM, e-commerce, desktop et mobile.</p>
+        <p>Expertise sur l'écosystème <strong>Laravel</strong>, <strong>Vue.js</strong> et <strong>Node.js</strong>, couplée à une solide maîtrise <strong>DevOps / CI-CD</strong>. Spécialisé dans l'intégration d'unités d'<strong>Intelligence Artificielle</strong> : agents LLM, MCP et architectures RAG.</p>
+        <p>Capacité à piloter des équipes techniques tout en restant opérationnel au code — autonomie, rigueur et qualité de livraison.</p>
+      </section>
+
+      <section>
+        <h2>Expériences</h2>
+
+        <article class="job">
+          <div class="job-head">
+            <h3 class="job-title">Lead Developer <em>— Lemontech</em></h3>
+            <div class="job-when"><span class="job-date">Mars 2021 — Présent</span><p class="job-meta">Mably, France · Agence web</p></div>
+          </div>
+          <ul class="bullets">
+            <li>Conception et évolution d'<strong>applications web métier</strong> pour un portefeuille de clients en agence.</li>
+            <li>Développement d'un <strong>éditeur graphique vectoriel</strong> complet — manipulation SVG / Canvas via Fabric.js.</li>
+            <li><strong>Pipeline d'export automatisé</strong> de fichiers de production (PDF, tracés de découpe) via des workers Node / Puppeteer.</li>
+            <li><strong>Pilotage technique</strong> : choix d'architecture, encadrement des développeurs et gestion des déploiements en production.</li>
+          </ul>
+          <p class="stack"><span>Vue.js</span><span>Laravel</span><span>Vuetify</span><span>Fabric.js</span><span>Puppeteer</span><span>Node.js</span></p>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <h3 class="job-title">Fullstack Developer <em>— Spirion</em></h3>
+            <div class="job-when"><span class="job-date">Mars 2022 — Présent</span><p class="job-meta">Freelance · Missions Upwork</p></div>
+          </div>
+          <ul class="bullets">
+            <li><strong>Système de crawling web piloté par IA</strong> : agent LLM en moteur de décision, outillé par un serveur <strong>MCP Laravel</strong> assurant la collecte, l'assainissement et le rendu des données finales.</li>
+            <li>Conception et intégration d'<strong>API REST avancées</strong>.</li>
+            <li>Développements <strong>back-end et mobile</strong> sur Node.js, Android, Laravel et Supabase.</li>
+            <li>Renfort d'équipes techniques sur des <strong>stacks hétérogènes</strong> à l'international.</li>
+          </ul>
+          <p class="stack"><span>LLM / Agents</span><span>MCP</span><span>Playwright</span><span>Laravel</span><span>TypeScript</span><span>Node.js</span><span>Docker</span><span>Supabase</span></p>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <h3 class="job-title">Lead Developer <em>— Tech Tablet</em></h3>
+            <div class="job-when"><span class="job-date">Mars 2017 — Mars 2021</span><p class="job-meta">Roanne, France · E-commerce</p></div>
+          </div>
+          <ul class="bullets">
+            <li><strong>Direction de l'équipe de développement</strong> sur le secteur e-commerce et accessoires mobiles.</li>
+            <li><strong>Informatisation intégrale du cœur de métier</strong> : logistique, CRM client, pipeline de commandes et gestion des stocks.</li>
+            <li>Volet <strong>DevOps</strong> : architecture système, environnements Dev / Staging / Prod, automatisation CI-CD, administration BDD, serveurs et monitoring.</li>
+          </ul>
+          <p class="stack"><span>Laravel</span><span>API REST</span><span>Micro-services</span><span>CI/CD</span><span>DevOps</span></p>
+        </article>
+
+        <article class="job">
+          <div class="job-head">
+            <h3 class="job-title">Web Developer <em>— Surmezur</em></h3>
+            <div class="job-when"><span class="job-date">2009 — 2015</span><p class="job-meta">PACA, France · Agence web</p></div>
+          </div>
+          <ul class="bullets">
+            <li><strong>Développement et maintenance de sites clients</strong> sous WordPress et PrestaShop : évolutions fonctionnelles, optimisation et support.</li>
+            <li><strong>Conception d'outils internes de gestion de projet</strong> en PHP natif, de la modélisation des données à la mise en production.</li>
+          </ul>
+          <p class="stack"><span>WordPress</span><span>PrestaShop</span><span>PHP natif</span><span>MySQL</span></p>
+        </article>
+
+      </section>
+
+    </div>
+
+    <!-- ══ Rail latéral ══ -->
+    <aside class="rail">
+
+      <section>
+        <h2>Compétences</h2>
+
+        <div class="skill-group">
+          <h3>Langages &amp; Frameworks</h3>
+          <p><span class="hi">PHP / Laravel</span>, JavaScript, TypeScript, <span class="hi">Vue.js</span>, Vuetify, Node.js, Express.js</p>
+        </div>
+
+        <div class="skill-group">
+          <h3>Mobile &amp; Données</h3>
+          <p>Android, iOS, MySQL, Supabase</p>
+        </div>
+
+        <div class="skill-group">
+          <h3>DevOps &amp; Infrastructure</h3>
+          <p>Docker, Redis, CI/CD, administration serveurs, API REST, micro-services</p>
+        </div>
+
+        <div class="skill-group rail-note">
+          <h3>Intelligence Artificielle</h3>
+          <ul class="ai-list">
+            <li><b>Agents LLM</b> — orchestration &amp; raisonnement</li>
+            <li><b>Serveurs MCP</b> — outillage métier des agents</li>
+            <li><b>Systèmes RAG</b> — Retrieval-Augmented Generation</li>
+            <li><b>Pipelines de données</b> — collecte, assainissement, rendu</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <h3>Spécialités</h3>
+          <p>Architecture logicielle, web scraping, automatisation navigateur (Puppeteer / Playwright), moteurs de rendu SVG / Canvas</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Langues</h2>
+        <div class="lang"><b>Français</b><span>Courant</span></div>
+        <div class="lang"><b>Malagasy</b><span>Langue maternelle</span></div>
+        <div class="lang"><b>Anglais</b><span>Technique</span></div>
+      </section>
+
+
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <span>Mihaja Herinjaka Rasolo — Curriculum Vitæ</span>
+    <span>Laravel · Vue.js · IA</span>
+  </footer>
+
+</main>
+
+</body>
+</html>

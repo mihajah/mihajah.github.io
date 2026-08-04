@@ -6,7 +6,8 @@ on ne le modifie jamais à la main, on régénère.
 
 ## Commande
 
-Depuis `/Users/targetmobile/Documents/work/perso/cv` :
+Depuis `/Users/targetmobile/Documents/work/perso/cv/cv` (le CV vit dans le
+sous-dossier `cv/` du dépôt, servi sur https://mihajah.github.io/cv/) :
 
 ```bash
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
