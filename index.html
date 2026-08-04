@@ -665,6 +665,15 @@
       .xitem .xdesc { font-size: .68rem; line-height: 1.38; }
       .xlist { gap: .4rem; }
     }
+
+    /* ── hero: full name, surname in caps ──────────────── */
+    .hero-name-full { font-size: clamp(2.4rem, 5.2vw, 4.6rem); line-height: .98; }
+    .hero-name-full .sur {
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: .045em;
+      font-size: .74em;
+    }
   </style>
 </head>
 <body>
@@ -722,7 +731,7 @@
         <canvas id="hero-canvas" class="sbg"></canvas>
         <div class="sc">
           <div class="hero-sub">Fullstack Developer &amp; Tech Lead</div>
-          <h1 class="hero-name">Mihaja<br /><em>Rasolo.</em></h1>
+          <h1 class="hero-name hero-name-full">Mihaja Herinjaka<br /><em class="sur">Rasolo.</em></h1>
           <p class="hero-desc">
             I design and ship custom business applications — from database schema to deployment pipeline. Laravel · Vue.js · Node.js, and AI systems that do real work.
           </p>
