@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mihaja Herinjaka Rasolo — Applications métier & automatisation IA</title>
+<meta name="description" content="Je conçois des applications métier sur-mesure et des automatisations par IA pour les entreprises qui veulent arrêter de perdre du temps sur des tâches manuelles." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@500,600,700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   TOKENS — monochrome, terminal
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#FFFFFF;
+  --fg:#0A0A0A;
+  --dim:#6B6B6B;
+  --dim-2:#9A9A9A;
+  --rule:rgba(10,10,10,.16);
+  --rule-strong:rgba(10,10,10,.45);
+  /* etat, pas identite : les deux seules couleurs du site */
+  --ok:#3FA65C;
+  --ko:#C0392B;
+  --inv-bg:#0A0A0A;
+  --inv-fg:#F2F2F2;
+  --inv-dim:#8E8E8E;
+  --inv-rule:rgba(242,242,242,.20);
+
+  --gut:clamp(16px,3.2vw,44px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --display:'General Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--mono);font-size:15px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--mono);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin:0;}
+.hero h1,.shead h2{font-family:var(--display);font-weight:600;letter-spacing:-.045em;}
+p{margin:0;}
+a{color:inherit;text-decoration:none;}
+.wrap{padding:0 var(--gut);}
+.dim{color:var(--dim);}
+
+/* mesure de lecture — jamais de ligne pleine largeur */
+.meas{max-width:64ch;}
+.meas-s{max-width:52ch;}
+
+.k{
+  font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════════════════════════ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid transparent;
+  transition:background .35s var(--ease),border-color .35s var(--ease);
+}
+.nav a,.nav button{transition:color .35s var(--ease);}
+.nav.stuck{
+  background:var(--inv-bg);color:var(--inv-fg);
+  backdrop-filter:none;-webkit-backdrop-filter:none;
+  border-bottom-color:transparent;
+}
+.nav.stuck .nav-links a{color:var(--inv-dim);}
+.nav.stuck .nav-links a:hover{color:var(--inv-fg);}
+.nav.stuck .lang button{color:var(--inv-dim);}
+.nav.stuck .lang button:hover,.nav.stuck .lang button.on{color:var(--inv-fg);}
+.nav.stuck .flag{outline-color:rgba(242,242,242,.3);}
+.nav-in{padding:0 var(--gut);height:46px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;}
+.nav-links{grid-column:2;justify-self:center;display:flex;gap:1.6rem;}
+.nav-links a{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);transition:color .18s var(--ease);}
+.nav-links a:hover{color:var(--fg);}
+@media(max-width:900px){ .nav-links{display:none;} }
+.lang{grid-column:3;justify-self:end;display:flex;gap:.1rem;}
+.lang button{
+  appearance:none;background:transparent;border:0;cursor:pointer;font-family:var(--mono);
+  font-size:.72rem;letter-spacing:.1em;color:var(--dim-2);padding:.25rem .45rem;
+  display:flex;align-items:center;gap:.4rem;transition:color .18s var(--ease);
+}
+.lang button:hover,.lang button.on{color:var(--fg);}
+.lang button.on::before{content:'[';margin-right:-.2rem;}
+.lang button.on::after{content:']';margin-left:-.2rem;}
+.flag{
+  width:14px;height:10px;display:block;flex:none;outline:1px solid rgba(10,10,10,.25);outline-offset:-1px;
+  filter:grayscale(1) contrast(1.15);opacity:.5;transition:filter .2s var(--ease),opacity .2s var(--ease);
+}
+.lang button.on .flag{filter:none;opacity:1;}
+
+/* ═══════════════════════════════════════════════════════════
+   BOUTONS
+   ═══════════════════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);
+  font-size:.74rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  padding:.62rem 1rem;border:1px solid var(--fg);cursor:pointer;background:transparent;color:var(--fg);
+  transition:background .18s var(--ease),color .18s var(--ease);
+}
+.btn:hover{background:var(--fg);color:var(--bg);}
+.btn-solid{background:var(--fg);color:var(--bg);}
+.btn-solid:hover{background:transparent;color:var(--fg);}
+.inv .btn{border-color:var(--inv-fg);color:var(--inv-fg);}
+.inv .btn:hover{background:var(--inv-fg);color:var(--inv-bg);}
+.inv .btn-solid{background:var(--inv-fg);color:var(--inv-bg);}
+.inv .btn-solid:hover{background:transparent;color:var(--inv-fg);}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════════════════════ */
+.hero{padding-top:46px;}
+.hero-in{padding:clamp(4rem,10vw,8rem) 0 clamp(2.4rem,4vw,3.8rem);text-align:center;display:flex;flex-direction:column;align-items:center;}
+.hero h1{font-size:clamp(2.6rem,8.2vw,6.8rem);max-width:16ch;line-height:.98;}
+.hero-lede{margin-top:1.8rem;color:var(--dim);}
+.hero-cta{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:2.4rem;}
+.hero-in .hero-cta{justify-content:center;}
+/* temoin de disponibilite — pastille flottante bas/droite, toujours visible.
+   Seule couleur de la page : elle porte un etat, pas une identite.
+   Passer en indisponible = ajouter la classe .busy sur le lien : vert -> rouge,
+   onde coupee, et le libelle .lb-ok cede la place a .lb-ko. */
+.avail-fx{
+  position:fixed;right:var(--gut);bottom:clamp(14px,2.4vw,28px);z-index:90;
+  display:inline-flex;align-items:center;gap:.55rem;
+}
+.avail-dot{
+  position:relative;width:11px;height:11px;border-radius:50%;flex:none;
+  background:var(--ok);
+}
+/* deux vaguelettes decalees : l'onde part du bord du rond et se dissout */
+.avail-dot::before,.avail-dot::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:1px solid var(--ok);
+  animation:ripple 2.8s var(--ease) infinite;
+}
+.avail-dot::after{animation-delay:1.4s;}
+@keyframes ripple{
+  0%{transform:scale(1);opacity:.7;}
+  70%{opacity:0;}
+  100%{transform:scale(3.4);opacity:0;}
+}
+/* le libelle ne sort qu'au survol : au repos, la pastille seule ne pese rien */
+.avail-lb{
+  background:var(--inv-bg);color:var(--inv-fg);
+  font-size:.58rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  padding:.34rem .6rem;white-space:nowrap;
+  opacity:0;transform:translateX(6px);
+  transition:opacity .22s var(--ease),transform .22s var(--ease);
+}
+.avail-fx:hover .avail-lb,.avail-fx:focus-visible .avail-lb{opacity:1;transform:none;}
+/* le libelle suit l'etat : un seul des deux est dans l'arbre a la fois, donc le
+   nom accessible du lien est toujours celui de l'etat affiche */
+.lb-ko{display:none;}
+.avail-fx.busy .lb-ok{display:none;}
+.avail-fx.busy .lb-ko{display:inline;}
+.avail-fx.busy .avail-dot{background:var(--ko);}
+.avail-fx.busy .avail-dot::before,.avail-fx.busy .avail-dot::after{border-color:var(--ko);animation:none;opacity:0;}
+@media(prefers-reduced-motion:reduce){
+  .avail-dot::before,.avail-dot::after{animation:none;opacity:0;}
+}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule-strong);}
+@media(max-width:700px){ .stats{grid-template-columns:1fr;} }
+.stat{padding:1.4rem 1.2rem;border-right:1px solid var(--rule);text-align:center;}
+.stat:last-child{border-right:0;}
+@media(max-width:700px){ .stat{border-right:0;border-bottom:1px solid var(--rule);} }
+.stat-v{font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:700;letter-spacing:-.04em;line-height:1;}
+.stat-l{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:.5rem;}
+
+/* ═══════════════════════════════════════════════════════════
+   EN-TÊTE DE SECTION — gros titre pleine largeur
+   ═══════════════════════════════════════════════════════════ */
+.sec{padding-top:clamp(3rem,6vw,5.5rem);position:relative;}
+/* separateur de bloc : tirets epais, bord a bord */
+.sec::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:repeating-linear-gradient(90deg,var(--fg) 0 14px,transparent 14px 24px);
+}
+.shead{padding-top:1.1rem;margin-bottom:clamp(2rem,4vw,3.4rem);scroll-margin-top:58px;}
+
+.shead h2{font-size:clamp(2.8rem,9vw,7.4rem);max-width:none;line-height:.94;text-transform:uppercase;}
+.shead .sub{
+  margin-top:clamp(1.1rem,2vw,1.6rem);font-size:clamp(1.02rem,1.7vw,1.5rem);
+  font-weight:500;letter-spacing:-.015em;line-height:1.35;max-width:none;color:var(--fg);
+}
+/* sur large ecran l'accroche tient sur une seule ligne */
+@media(min-width:1000px){ .shead .sub{white-space:nowrap;} }
+.shead .lede{margin-top:1rem;color:var(--dim);font-size:.8rem;line-height:1.75;}
+
+/* ═══════════════════════════════════════════════════════════
+   BLOC 2 COLONNES — titre a gauche, contenu a droite
+   ═══════════════════════════════════════════════════════════ */
+.two{
+  scroll-margin-top:70px;
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:clamp(1.6rem,4vw,5rem);
+  border-top:1px solid var(--rule);
+  padding:clamp(1.8rem,3.4vw,3rem) 0;
+}
+@media(max-width:900px){ .two{grid-template-columns:1fr;gap:1.6rem;} }
+.two-l{align-self:start;}
+@media(min-width:901px){ .two-l{position:sticky;top:80px;} }
+.two-l .idx{font-size:.7rem;letter-spacing:.16em;color:var(--dim-2);display:block;margin-bottom:.9rem;}
+.two-l h3{font-size:clamp(1.3rem,2.6vw,2.1rem);max-width:16ch;}
+/* le 16ch mesure les titres de services, qui sont des phrases. Les noms de
+   projets ne se mesurent pas : ils tiennent sur une ligne tant que la colonne
+   le permet, et ne se replient que si elle devient vraiment etroite. */
+[id^="cas-"] .two-l h3{max-width:none;}
+.two-l .promise{margin-top:1rem;max-width:34ch;color:var(--dim);}
+.two-l > .promise:first-child{margin-top:0;max-width:40ch;}
+.bio-cta{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:.6rem;margin-top:1.8rem;}
+.bio-cta .btn{justify-content:center;}
+/* À propos : la colonne bio remplit la hauteur, les boutons tombent en bas,
+   au niveau du dernier jalon de la timeline (le début du parcours). */
+@media(min-width:901px){
+  .two-bio .two-l{position:static;align-self:stretch;display:flex;flex-direction:column;}
+  .two-bio .bio-cta{margin-top:auto;align-self:flex-start;}
+  .two-bio .two-l > .promise:first-child{max-width:none;}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TIMELINE — problème → solution → résultat
+   ═══════════════════════════════════════════════════════════ */
+.tl{border-left:1px solid var(--rule);padding-left:clamp(1.1rem,2vw,1.8rem);}
+.inv .tl{border-left-color:var(--inv-rule);}
+.tl-i{position:relative;padding-bottom:1.7rem;}
+.tl-i:last-child{padding-bottom:0;}
+.tl-i::before{
+  content:'';position:absolute;top:.42rem;left:calc(-1 * clamp(1.1rem,2vw,1.8rem) - 1px);
+  width:9px;height:9px;transform:translateX(-4px);
+  background:var(--bg);border:1px solid var(--fg);
+}
+.inv .tl-i::before{background:var(--inv-bg);border-color:var(--inv-fg);}
+.tl-i.fin::before{background:var(--fg);}
+.inv .tl-i.fin::before{background:var(--inv-fg);}
+.tl-k{font-size:.68rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:.45rem;}
+.inv .tl-k{color:var(--inv-dim);}
+.tl-i.fin .tl-k{color:var(--fg);}
+.inv .tl-i.fin .tl-k{color:var(--inv-fg);}
+.tl-t{color:var(--dim);max-width:56ch;}
+.inv .tl-t{color:var(--inv-dim);}
+.tl-i.fin .tl-t{color:var(--fg);font-weight:500;}
+.inv .tl-i.fin .tl-t{color:var(--inv-fg);}
+
+/* repli technique */
+.disc{margin-top:1.8rem;}
+.disc summary{
+  list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);transition:color .18s var(--ease);
+}
+.disc summary::-webkit-details-marker{display:none;}
+.disc summary:hover{color:var(--fg);}
+.disc summary .sign::after{content:'[+]';}
+.disc[open] summary .sign::after{content:'[-]';}
+.disc-body{padding-top:1.1rem;animation:fade .35s var(--ease);}
+.tech{display:grid;gap:.55rem;}
+.tech-r{display:grid;grid-template-columns:minmax(0,88px) 1fr;gap:.9rem;align-items:start;}
+.tech-k{
+  font-size:.62rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim-2);padding-top:.22rem;
+}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;}
+.chip{
+  font-size:.68rem;letter-spacing:.06em;color:var(--dim);
+  border:1px solid var(--rule);padding:.22rem .55rem;
+  transition:color .2s var(--ease),border-color .2s var(--ease);
+}
+.chip:hover{color:var(--fg);border-color:var(--fg);}
+.inv .chip{border-color:var(--inv-rule);color:var(--inv-dim);}
+.proof{color:var(--dim);max-width:60ch;}
+.proof b{color:var(--fg);font-weight:700;}
+
+.seelink{
+  display:inline-flex;align-items:center;gap:.45rem;margin-top:1.4rem;margin-right:1.4rem;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  transition:color .18s var(--ease);
+}
+.seelink:hover{color:var(--fg);}
+.seelink svg{transition:transform .25s var(--ease);}
+.seelink:hover svg{transform:translateY(2px);}
+
+.seelist{
+  margin-top:1.4rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+}
+.seelist a{display:inline-flex;align-items:center;gap:.4rem;transition:color .18s var(--ease);}
+.seelist a:hover{color:var(--fg);}
+.seelist svg{transition:transform .25s var(--ease);}
+.seelist a:hover svg{transform:translateY(2px);}
+.seelist .sp{color:var(--rule);}
+
+.kpi{font-weight:700;}
+.kpi::before{content:'→ ';color:var(--dim);}
+
+/* socle — encart compact, 60% de large, centre, hauteur minimale */
+.socle{
+  width:60%;margin:clamp(2.2rem,4vw,3.6rem) auto clamp(2.6rem,5vw,4.4rem);
+  background:var(--inv-bg);color:var(--inv-fg);
+  padding:.95rem clamp(1rem,1.8vw,1.4rem);
+}
+.socle-in{display:flex;align-items:flex-start;gap:clamp(1rem,2.2vw,2rem);}
+.socle-t{flex:none;max-width:15ch;}
+.socle-k{font-size:.58rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--inv-dim);}
+.socle-h{font-size:.8rem;font-weight:700;letter-spacing:-.01em;line-height:1.2;margin-top:.15rem;}
+.socle-stack{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.85rem;}
+.socle-stack span{
+  font-size:.58rem;letter-spacing:.05em;color:var(--inv-dim);
+  border:1px solid var(--inv-rule);padding:.12rem .45rem;
+  transition:color .2s var(--ease),border-color .2s var(--ease);
+}
+.socle-stack span:hover{color:var(--inv-fg);border-color:var(--inv-fg);}
+.socle-r{flex:1;min-width:0;}
+.socle-list{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1.2rem;}
+.socle-list b{display:block;font-size:.63rem;font-weight:700;letter-spacing:-.005em;line-height:1.3;}
+.socle-list span{display:block;font-size:.58rem;line-height:1.42;color:var(--inv-dim);}
+@media(max-width:1100px){
+  .socle{width:100%;}
+  .socle-in{flex-direction:column;align-items:flex-start;gap:1rem;}
+  .socle-t{max-width:none;}
+}
+@media(max-width:600px){ .socle-list{grid-template-columns:1fr;} }
+
+/* methode — timeline horizontale */
+/* row-gap : des que la grille passe sur plusieurs rangees, l'icone de la
+   rangee suivante (top:-15px) mordrait sur le texte de la precedente. */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);column-gap:0;row-gap:clamp(2.4rem,4vw,3.2rem);padding-bottom:clamp(2.6rem,5vw,4.4rem);}
+/* 5 etapes : au-dessous de 1150px les colonnes deviennent trop etroites,
+   on repasse a 3 puis 2 puis 1 — chaque rangee garde son filet haut. */
+@media(max-width:1150px){ .steps{grid-template-columns:repeat(3,1fr);} }
+.step{position:relative;border-top:1px solid var(--rule);padding:2.4rem 1.6rem 0 0;}
+.step-ic{
+  position:absolute;top:-15px;left:0;width:30px;height:30px;
+  background:var(--bg);border:1px solid var(--fg);
+  display:flex;align-items:center;justify-content:center;color:var(--fg);
+  transition:background .2s var(--ease),color .2s var(--ease);
+}
+.step-ic svg{width:16px;height:16px;}
+.step:hover .step-ic{background:var(--fg);color:var(--bg);}
+.step-n{font-size:.62rem;letter-spacing:.18em;color:var(--dim-2);}
+.step h4{font-size:.95rem;font-weight:700;letter-spacing:-.01em;margin:.35rem 0 .5rem;}
+.step p{font-size:.78rem;line-height:1.6;color:var(--dim);}
+@media(max-width:860px){
+  .steps{grid-template-columns:1fr 1fr;}
+  .step{padding-top:2.6rem;}
+}
+@media(max-width:520px){ .steps{grid-template-columns:1fr;} }
+
+/* ═══════════════════════════════════════════════════════════
+   BANDES INVERSÉES
+   ═══════════════════════════════════════════════════════════ */
+.inv{background:var(--inv-bg);color:var(--inv-fg);margin-top:clamp(3rem,6vw,5.5rem);}
+.inv-in{
+  /* uniquement le vertical : le retrait horizontal vient de .wrap */
+  padding-top:clamp(4.1rem,7vw,6.6rem);
+  padding-bottom:clamp(3.4rem,6vw,5.5rem);
+}
+.inv .k,.inv .dim,.inv .lede{color:var(--inv-dim);}
+.inv .shead .sub{color:var(--inv-fg);}
+
+.inv .two{border-top-color:var(--inv-rule);}
+.inv .two-l .promise{color:var(--inv-dim);}
+.inv .flag{outline-color:rgba(242,242,242,.3);}
+
+/* liste simple 2 colonnes (références, méthode) */
+.line{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:clamp(1.6rem,4vw,5rem);
+  border-top:1px solid var(--rule);padding:1.15rem 0;
+}
+@media(max-width:900px){ .line{grid-template-columns:1fr;gap:.4rem;} }
+.inv .line{border-top-color:var(--inv-rule);}
+.line-k{font-weight:700;letter-spacing:-.01em;}
+.line-k .num{color:var(--dim-2);font-weight:400;margin-right:.6rem;}
+.line-v{color:var(--dim);max-width:58ch;}
+.inv .line-v{color:var(--inv-dim);}
+
+.band-foot{
+  margin-top:clamp(3rem,6vw,5rem);padding-top:1.5rem;
+  border-top:1px solid var(--inv-rule);
+  display:flex;justify-content:space-between;align-items:baseline;gap:1.2rem;flex-wrap:wrap;
+  font-size:.72rem;letter-spacing:.04em;color:var(--inv-dim);
+}
+.band-foot a{transition:color .18s var(--ease);}
+.band-foot a:hover{color:var(--inv-fg);}
+.foot-ver{letter-spacing:.12em;}
+
+/* lignes de contact */
+/* nom en tete des coordonnees : un cran au-dessus des lignes de contact,
+   deux crans sous le titre de section — il signe, il ne titre pas. */
+.cname{
+  margin-top:clamp(1.8rem,3vw,2.6rem);
+  font-size:clamp(1.05rem,1.9vw,1.35rem);font-weight:700;letter-spacing:-.02em;
+  color:var(--inv-fg);
+}
+.crole{
+  margin-top:.3rem;
+  font-size:.68rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--inv-dim);
+}
+/* identifiants legaux : registre le plus bas de la bande, sous la signature.
+   Ils prouvent l'existence juridique, ils ne vendent rien — d'ou le corps le
+   plus petit et le gris le plus sourd de la page. Les deux tiennent sur une
+   ligne, separes par un cadratin ; chaque identifiant est insecable, donc si
+   la ligne doit se replier elle casse au tiret, jamais au milieu d'un numero. */
+.cid{
+  margin-top:.55rem;
+  font-size:.62rem;letter-spacing:.08em;color:var(--inv-dim);
+  font-variant-numeric:tabular-nums;
+}
+.cid span{white-space:nowrap;}
+.cid span + span::before{content:"—";margin:0 .55rem;}
+.cid b{font-weight:600;letter-spacing:.16em;}
+.crole + .clinks{margin-top:1.1rem;}
+.cid + .clinks{margin-top:1.1rem;}
+.cname + .clinks{margin-top:1.1rem;}
+/* coordonnees en carres a filet fin : meme vocabulaire que les marqueurs de la
+   Methode et les boutons. Le libelle disparait, l'aria-label le porte. */
+.clinks{margin-top:clamp(1.8rem,3vw,2.6rem);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;}
+.clinks a{
+  width:46px;height:46px;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--inv-fg);border:1px solid var(--inv-rule);
+  transition:background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease);
+}
+.clinks a:hover,.clinks a:focus-visible{background:var(--inv-fg);color:var(--inv-bg);border-color:var(--inv-fg);}
+.clinks .ci{width:20px;height:20px;flex:none;}
+
+.rv{opacity:0;transform:translateY(12px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.rv.seen{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <div class="nav-links">
+      <a href="#services" data-fr="Services" data-en="Services">Services</a>
+      <a href="#cas" data-fr="Réalisations" data-en="Case studies">Réalisations</a>
+      <a href="#methode" data-fr="Méthode" data-en="Process">Méthode</a>
+      <a href="#apropos" data-fr="À propos" data-en="About">À propos</a>
+      <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+    </div>
+    <div class="lang" id="seg">
+      <button class="on" data-lang="fr"><svg class="flag" viewBox="0 0 60 40" aria-hidden="true"><rect width="20" height="40" fill="#002395"/><rect x="20" width="20" height="40" fill="#F5F5F5"/><rect x="40" width="20" height="40" fill="#ED2939"/></svg>FR</button>
+      <button data-lang="en"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0 0 60 30M60 0 0 30" stroke="#F5F5F5" stroke-width="7"/><path d="M0 0 60 30M60 0 0 30" stroke="#C8102E" stroke-width="4"/><path d="M30 0V30M0 15H60" stroke="#F5F5F5" stroke-width="11"/><path d="M30 0V30M0 15H60" stroke="#C8102E" stroke-width="6"/></svg>EN</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="wrap hero-in">
+    <h1 class="rv" data-fr="Du problème métier à l'outil qui tourne, et qui suit votre croissance." data-en="From the business problem to the tool that runs — and grows with you.">Du problème métier à l'outil qui tourne, et qui suit votre croissance.</h1>
+    <p class="hero-lede meas rv" data-fr="Applications métier sur-mesure et automatisations par intelligence artificielle, pour vous libérer des tâches répétitives." data-en="Custom business applications and AI-driven automation, to free you from repetitive work.">Applications métier sur-mesure et automatisations par intelligence artificielle, pour vous libérer des tâches répétitives.</p>
+    <div class="hero-cta rv">
+      <a href="#services" class="btn btn-solid" data-fr="Découvrir les services" data-en="Explore services">Découvrir les services</a>
+      <a href="#contact" class="btn" data-fr="Parler de votre projet" data-en="Discuss your project">Parler de votre projet</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="stats rv">
+      <div class="stat"><div class="stat-v">15+</div><div class="stat-l" data-fr="ans d'expérience" data-en="years of experience">ans d'expérience</div></div>
+      <div class="stat"><div class="stat-v">[XX]</div><div class="stat-l" data-fr="[PLACEHOLDER — stat]" data-en="[PLACEHOLDER — stat]">[PLACEHOLDER — stat]</div></div>
+      <div class="stat"><div class="stat-v">[XX]</div><div class="stat-l" data-fr="[PLACEHOLDER — stat]" data-en="[PLACEHOLDER — stat]">[PLACEHOLDER — stat]</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ SERVICES ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead rv" id="services">
+      <h2 data-fr="Services" data-en="Services">Services</h2>
+      <p class="sub meas" data-fr="Deux façons de vous faire gagner du temps." data-en="Two ways to win back your time.">Deux façons de vous faire gagner du temps.</p>
+      <p class="lede meas" data-fr="[PLACEHOLDER — chapô] Chaque mission part d'un problème concret, pas d'une technologie." data-en="[PLACEHOLDER — intro] Every engagement starts from a real problem, not from a technology.">[PLACEHOLDER — chapô] Chaque mission part d'un problème concret, pas d'une technologie.</p>
+    </div>
+
+    <!-- service 01 -->
+    <article class="two rv">
+      <div class="two-l">
+        <span class="idx">01</span>
+        <h3 data-fr="Automatisation intelligente par IA" data-en="Intelligent AI automation">Automatisation intelligente par IA</h3>
+        <p class="promise" data-fr="Vos données travaillent pour vous, sans que personne n'ait à les saisir." data-en="Your data works for you — with nobody typing it in.">Vos données travaillent pour vous, sans que personne n'ait à les saisir.</p>
+      </div>
+      <div>
+        <div class="tl">
+          <div class="tl-i">
+            <div class="tl-k" data-fr="Le problème" data-en="The problem">Le problème</div>
+            <p class="tl-t" data-fr="Vos équipes passent des heures sur des tâches répétitives : copier-coller de données, saisie manuelle, retraitement de fichiers, veille concurrentielle. Du temps qualifié dépensé sur du travail qui n'en demande pas." data-en="Your team spends hours on repetitive work: copy-pasting data, manual entry, reprocessing files, monitoring competitors. Skilled time spent on unskilled work.">Vos équipes passent des heures sur des tâches répétitives : copier-coller de données, saisie manuelle, retraitement de fichiers, veille concurrentielle. Du temps qualifié dépensé sur du travail qui n'en demande pas.</p>
+          </div>
+          <div class="tl-i">
+            <div class="tl-k" data-fr="La solution" data-en="The solution">La solution</div>
+            <p class="tl-t" data-fr="Des agents IA autonomes qui vont chercher l'information là où elle est, la nettoient, la structurent et la déposent directement dans vos outils. Ils tournent en continu, sans supervision." data-en="Autonomous AI agents that fetch the information where it lives, clean it, structure it and push it straight into your tools. Running continuously, unsupervised.">Des agents IA autonomes qui vont chercher l'information là où elle est, la nettoient, la structurent et la déposent directement dans vos outils. Ils tournent en continu, sans supervision.</p>
+          </div>
+          <div class="tl-i fin">
+            <div class="tl-k" data-fr="Le résultat" data-en="The outcome">Le résultat</div>
+            <p class="tl-t" data-fr="Des traitements qui prenaient plusieurs jours se font en quelques minutes. Vos équipes retrouvent leur temps, et vous décidez sur des données fraîches." data-en="Work that took days now takes minutes. Your team gets its time back, and you decide on fresh data.">Des traitements qui prenaient plusieurs jours se font en quelques minutes. Vos équipes retrouvent leur temps, et vous décidez sur des données fraîches.</p>
+          </div>
+        </div>
+        <a class="seelink" href="#cas-crawler"><span data-fr="En pratique" data-en="In practice">En pratique</span> : Crawler IA<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
+      </div>
+    </article>
+
+    <!-- service 02 -->
+    <article class="two rv">
+      <div class="two-l">
+        <span class="idx">02</span>
+        <h3 data-fr="Digitalisation de vos processus métier" data-en="Digitising your business processes">Digitalisation de vos processus métier</h3>
+        <p class="promise" data-fr="Un seul outil, taillé pour votre façon de travailler." data-en="One tool, cut to the way you actually work.">Un seul outil, taillé pour votre façon de travailler.</p>
+      </div>
+      <div>
+        <div class="tl">
+          <div class="tl-i">
+            <div class="tl-k" data-fr="Le problème" data-en="The problem">Le problème</div>
+            <p class="tl-t" data-fr="Des fichiers Excel qui circulent par mail, un logiciel acheté il y a dix ans que plus personne ne maîtrise, des informations saisies deux fois, des stocks jamais tout à fait justes. Personne n'a la vue d'ensemble." data-en="Spreadsheets flying around by email, a decade-old software nobody masters any more, data entered twice, stock counts never quite right. Nobody has the full picture.">Des fichiers Excel qui circulent par mail, un logiciel acheté il y a dix ans que plus personne ne maîtrise, des informations saisies deux fois, des stocks jamais tout à fait justes. Personne n'a la vue d'ensemble.</p>
+          </div>
+          <div class="tl-i">
+            <div class="tl-k" data-fr="La solution" data-en="The solution">La solution</div>
+            <p class="tl-t" data-fr="Une application métier centralisée, conçue à partir de votre fonctionnement réel et non l'inverse. Gestion commerciale, stocks, CRM, commandes, e-commerce : ce dont vous avez besoin, pas ce qu'un éditeur a décidé de vendre." data-en="A centralised business application built around how you actually operate, not the other way round. Sales, stock, CRM, orders, e-commerce: what you need, not what a vendor decided to sell.">Une application métier centralisée, conçue à partir de votre fonctionnement réel et non l'inverse. Gestion commerciale, stocks, CRM, commandes, e-commerce : ce dont vous avez besoin, pas ce qu'un éditeur a décidé de vendre.</p>
+          </div>
+          <div class="tl-i fin">
+            <div class="tl-k" data-fr="Le résultat" data-en="The outcome">Le résultat</div>
+            <p class="tl-t" data-fr="Une seule source de vérité, accessible à toute l'équipe. Fin des doubles saisies et des erreurs de recopie, visibilité en temps réel sur l'activité." data-en="A single source of truth for the whole team. No more double entry or copy errors, and real-time visibility on the business.">Une seule source de vérité, accessible à toute l'équipe. Fin des doubles saisies et des erreurs de recopie, visibilité en temps réel sur l'activité.</p>
+          </div>
+        </div>
+        <p class="seelist"><span data-fr="En pratique" data-en="In practice">En pratique</span> :
+          <a href="#cas-ecommerce">E-commerce BtoC / BtoB<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a><span class="sp">/</span><a href="#cas-editeur">Éditeur graphique<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
+        </p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ══ RÉALISATIONS ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead rv" id="cas">
+      <h2 data-fr="Réalisations" data-en="Case studies">Réalisations</h2>
+      <p class="sub meas" data-fr="Des projets livrés, et ce qu'ils ont changé." data-en="Shipped projects, and what they changed.">Des projets livrés, et ce qu'ils ont changé.</p>
+    </div>
+
+    <article class="two rv" id="cas-crawler">
+      <div class="two-l">
+        <span class="idx">01</span>
+        <h3 data-fr="Crawler IA" data-en="AI Crawler">Crawler IA</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Collecte automatisée de données par IA : extraction et nettoyage de données complexes sur le web, sans intervention humaine." data-en="AI-automated data collection: extracting and cleaning complex web data with no human in the loop.">Collecte automatisée de données par IA : extraction et nettoyage de données complexes sur le web, sans intervention humaine.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Une journée de recherche et de saisie, désormais une minute" data-en="A day of research and data entry, now one minute">Une journée de recherche et de saisie, désormais une minute</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">API REST</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">IA</div>
+              <div class="chips"><span class="chip">Agents LLM</span><span class="chip">Serveurs MCP</span><span class="chip">RAG</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Laravel</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Automation</div>
+              <div class="chips"><span class="chip">Playwright</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-commande">
+      <div class="two-l">
+        <span class="idx">02</span>
+        <h3 data-fr="Prise de commande hors ligne" data-en="Offline order taking">Prise de commande hors ligne</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Application mobile de prise de commande sur salon : le commercial retrouve un client dans la liste ou crée la fiche d'un prospect en photographiant sa carte de visite, scanne le QR code du produit pour l'ajouter au panier et valide la commande sans réseau. À la synchronisation, commandes, paniers et cartes de visite remontent au serveur, qui renvoie un fichier au format de l'ERP, prêt à être intégré sans ressaisie." data-en="Mobile order-taking app for trade shows: the rep pulls an existing customer from the list or creates a prospect record by photographing their business card, scans the product QR code to add it to the basket and confirms the order with no network. On sync, orders, baskets and cards reach the server, which returns a file in the ERP's own format, ready to import with no re-keying.">Application mobile de prise de commande sur salon : le commercial retrouve un client dans la liste ou crée la fiche d'un prospect en photographiant sa carte de visite, scanne le QR code du produit pour l'ajouter au panier et valide la commande sans réseau. À la synchronisation, commandes, paniers et cartes de visite remontent au serveur, qui renvoie un fichier au format de l'ERP, prêt à être intégré sans ressaisie.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Deux jours de ressaisie ramenés à cinq minutes" data-en="Two days of re-keying down to five minutes">Deux jours de ressaisie ramenés à cinq minutes</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">Offline-first</span><span class="chip">API REST</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Mobile</div>
+              <div class="chips"><span class="chip">Capacitor.js</span><span class="chip">Android</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Vue 3</span><span class="chip">Bootstrap CSS</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">PHP natif</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">SQLite</span><span class="chip">MySQL</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Services</div>
+              <div class="chips"><span class="chip">Power BI API</span><span class="chip">SOLINlyst</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-ecommerce">
+      <div class="two-l">
+        <span class="idx">03</span>
+        <h3>E-commerce BtoC / BtoB</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Numérisation intégrée de la chaîne logistique : commandes, stocks et relation client automatisés pour accompagner une forte croissance." data-en="End-to-end supply chain digitisation: orders, stock and CRM automated to support steep growth.">Numérisation intégrée de la chaîne logistique : commandes, stocks et relation client automatisés pour accompagner une forte croissance.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Activité BtoC devenue BtoB, en un an" data-en="A BtoC business turned BtoB, in one year">Activité BtoC devenue BtoB, en un an</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">Micro-services</span><span class="chip">API REST</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Blade</span><span class="chip">Bootstrap CSS</span><span class="chip">PrestaShop</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Laravel</span><span class="chip">Lumen</span><span class="chip">Node.js</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Services</div>
+              <div class="chips"><span class="chip">Stripe</span><span class="chip">Pappers</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-immo">
+      <div class="two-l">
+        <span class="idx">04</span>
+        <h3 data-fr="Portail immobilier" data-en="Property portal">Portail immobilier</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Plateforme de vente immobilière pour une agence de la Côte d'Azur : catalogue de biens avec recherche multicritère, fiches détaillées et demandes de contact, alimenté et tenu à jour par les agents eux-mêmes." data-en="Property sales platform for a French Riviera agency: a listings catalogue with multi-criteria search, detailed property pages and enquiry forms, kept up to date by the agents themselves.">Plateforme de vente immobilière pour une agence de la Côte d'Azur : catalogue de biens avec recherche multicritère, fiches détaillées et demandes de contact, alimenté et tenu à jour par les agents eux-mêmes.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Une vitrine en ligne, et des prospects que l'agence n'atteignait pas avant" data-en="An online showcase, and prospects the agency could not reach before">Une vitrine en ligne, et des prospects que l'agence n'atteignait pas avant</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">CMS</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Joomla</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-editeur">
+      <div class="two-l">
+        <span class="idx">05</span>
+        <h3 data-fr="Éditeur graphique" data-en="Graphics editor">Éditeur graphique</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Plateforme de personnalisation et de prêt-à-imprimer : le client compose son produit en ligne, le fichier de production est généré automatiquement." data-en="Customisation and print-ready platform: the client composes the product online, the production file is generated automatically.">Plateforme de personnalisation et de prêt-à-imprimer : le client compose son produit en ligne, le fichier de production est généré automatiquement.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="L'équipement complet d'une équipe : d'une semaine à deux heures" data-en="A full team kit: from a week to two hours">L'équipement complet d'une équipe : d'une semaine à deux heures</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">SPA</span><span class="chip">API REST</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Vue.js</span><span class="chip">Vuetify</span><span class="chip">Fabric.js</span><span class="chip">Paper.js</span><span class="chip">SVG / Canvas</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Laravel</span><span class="chip">Node.js</span><span class="chip">Adobe Illustrator JSX</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Automation</div>
+              <div class="chips"><span class="chip">Puppeteer</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-crm">
+      <div class="two-l">
+        <span class="idx">06</span>
+        <h3 data-fr="CRM &amp; gestion de projet" data-en="CRM &amp; project management">CRM &amp; gestion de projet</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Deux applications SaaS complémentaires : un CRM qui centralise clients et prospects, et un outil de gestion de projet qui structure le travail des équipes en interne." data-en="Two complementary SaaS applications: a CRM that centralises customers and prospects, and a project management tool that structures how the teams work internally.">Deux applications SaaS complémentaires : un CRM qui centralise clients et prospects, et un outil de gestion de projet qui structure le travail des équipes en interne.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Excel, mails et Word remplacés par un outil unique, visible par tous" data-en="Excel, email and Word replaced by one shared tool, visible to everyone">Excel, mails et Word remplacés par un outil unique, visible par tous</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">Monolithic</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Blade</span><span class="chip">Bootstrap CSS</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Laravel</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Services</div>
+              <div class="chips"><span class="chip">Power BI API</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-reseau">
+      <div class="two-l">
+        <span class="idx">07</span>
+        <h3 data-fr="Plateforme de réseau d'affaires" data-en="Business network platform">Plateforme de réseau d'affaires</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Plateforme d'animation de réseau d'affaires : adhésions, réunions, événements, invités et mises en relation pilotés depuis un seul outil, du paiement de la cotisation au déroulement des séances." data-en="Business-network management platform: memberships, meetings, events, guests and introductions all driven from a single tool, from the membership payment through to running the sessions themselves.">Plateforme d'animation de réseau d'affaires : adhésions, réunions, événements, invités et mises en relation pilotés depuis un seul outil, du paiement de la cotisation au déroulement des séances.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Tout le fonctionnement du club dans un seul outil, automatisé pour les membres" data-en="The club's entire operation in a single tool, automated for its members">Tout le fonctionnement du club dans un seul outil, automatisé pour les membres</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">MVC</span><span class="chip">Monolithic</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Livewire</span><span class="chip">Blade</span><span class="chip">Bootstrap CSS</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Laravel</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Services</div>
+              <div class="chips"><span class="chip">Stripe</span><span class="chip">AllMySMS</span><span class="chip">Google API</span><span class="chip">OpenStreetMap</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <article class="two rv" id="cas-vecto">
+      <div class="two-l">
+        <span class="idx">08</span>
+        <h3 data-fr="Tarification par IA" data-en="AI-driven pricing">Tarification par IA</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Service en ligne de vectorisation et de production graphique : une IA note la complexité de chaque logo envoyé, de 1 à 5, ce qui affecte automatiquement le bon graphiste et affiche son tarif au client avant qu'il valide la commande." data-en="Online vectorisation and graphic production service: an AI rates the complexity of every uploaded logo from 1 to 5, which automatically assigns the right designer and shows clients their price before they confirm the order.">Service en ligne de vectorisation et de production graphique : une IA note la complexité de chaque logo envoyé, de 1 à 5, ce qui affecte automatiquement le bon graphiste et affiche son tarif au client avant qu'il valide la commande.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Deux à cinq minutes par logo, désormais instantané" data-en="Two to five minutes per logo, now instant">Deux à cinq minutes par logo, désormais instantané</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">SSR</span><span class="chip">API REST</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">IA</div>
+              <div class="chips"><span class="chip">LLM</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Next.js</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Nest.js</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">MySQL</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
+    <div class="socle rv" id="socle">
+      <div class="socle-in">
+        <div class="socle-t">
+          <span class="socle-k" data-fr="Socle DevOps" data-en="DevOps foundation">Socle DevOps</span>
+          <p class="socle-h" data-fr="Ce qui tourne derrière chaque projet." data-en="What runs behind every project.">Ce qui tourne derrière chaque projet.</p>
+        </div>
+        <div class="socle-r">
+        <div class="socle-list">
+          <div><b data-fr="Déploiement sans coupure" data-en="Zero-downtime deployment">Déploiement sans coupure</b><span data-fr="Les mises à jour passent en production sans interruption pour vos utilisateurs." data-en="Updates reach production with no interruption for your users.">Les mises à jour passent en production sans interruption pour vos utilisateurs.</span></div>
+          <div><b data-fr="Testé avant livraison" data-en="Tested before shipping">Testé avant livraison</b><span data-fr="Chaque évolution est validée sur un environnement séparé avant de vous atteindre." data-en="Every change is validated on a separate environment before it reaches you.">Chaque évolution est validée sur un environnement séparé avant de vous atteindre.</span></div>
+          <div><b data-fr="Surveillé et sauvegardé" data-en="Monitored and backed up">Surveillé et sauvegardé</b><span data-fr="Supervision et sauvegardes automatiques : un incident se voit avant vous." data-en="Automated monitoring and backups: an incident is seen before you are.">Supervision et sauvegardes automatiques : un incident se voit avant vous.</span></div>
+          <div><b data-fr="Prêt pour la croissance" data-en="Ready to scale">Prêt pour la croissance</b><span data-fr="Une architecture qui encaisse la montée en charge quand l'activité grossit." data-en="An architecture that absorbs load as the business grows.">Une architecture qui encaisse la montée en charge quand l'activité grossit.</span></div>
+        </div>
+        <div class="socle-stack">
+          <span>GitHub</span><span>CI/CD</span><span>Docker</span><span>PM2</span><span>Sentry</span><span>BetterStack</span><span>TDD</span><span>Apache</span><span>Nginx</span><span>Deployer</span>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MÉTHODE ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead rv" id="methode">
+      <h2 data-fr="Méthode" data-en="Process">Méthode</h2>
+      <p class="sub meas" data-fr="Comment on travaille ensemble." data-en="How we work together.">Comment on travaille ensemble.</p>
+      <p class="lede meas" data-fr="[PLACEHOLDER — chapô méthode] À définir : rassurer le prospect qui n'a jamais fait développer sur-mesure." data-en="[PLACEHOLDER — process intro] To define: reassure the prospect who has never commissioned custom software.">[PLACEHOLDER — chapô méthode] À définir : rassurer le prospect qui n'a jamais fait développer sur-mesure.</p>
+    </div>
+    <div class="steps rv">
+      <div class="step">
+        <span class="step-ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="7" r="4.6"/><path d="M10.4 10.4 14.5 14.5"/></svg></span>
+        <div class="step-n">01</div>
+        <h4 data-fr="Cadrage" data-en="Scoping">Cadrage</h4>
+        <p data-fr="Comprendre le problème réel avant de parler solution." data-en="Understand the real problem before talking solutions.">Comprendre le problème réel avant de parler solution.</p>
+      </div>
+      <div class="step">
+        <span class="step-ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="2.3"/><path d="M8 1.4v1.9M8 12.7v1.9M14.6 8h-1.9M3.3 8H1.4M12.67 3.33 11.33 4.67M4.67 11.33 3.33 12.67M12.67 12.67 11.33 11.33M4.67 4.67 3.33 3.33"/></svg></span>
+        <div class="step-n">02</div>
+        <h4 data-fr="Conception" data-en="Design">Conception</h4>
+        <p data-fr="Périmètre, budget et calendrier posés noir sur blanc." data-en="Scope, budget and timeline set out in writing.">Périmètre, budget et calendrier posés noir sur blanc.</p>
+      </div>
+      <div class="step">
+        <span class="step-ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.6 4.4 2.2 8l3.4 3.6M10.4 4.4 13.8 8l-3.4 3.6"/></svg></span>
+        <div class="step-n">03</div>
+        <h4 data-fr="Développement" data-en="Build">Développement</h4>
+        <p data-fr="Le code s'écrit par incréments testés, visibles au fil de l'eau." data-en="Code is written in tested increments, visible as it goes.">Le code s'écrit par incréments testés, visibles au fil de l'eau.</p>
+      </div>
+      <div class="step">
+        <span class="step-ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 5 8 2.2 13.8 5v6L8 13.8 2.2 11z"/><path d="M2.2 5 8 7.8 13.8 5M8 7.8v6"/></svg></span>
+        <div class="step-n">04</div>
+        <h4 data-fr="Livraison" data-en="Delivery">Livraison</h4>
+        <p data-fr="Des versions utilisables tôt, pas un tunnel de six mois." data-en="Usable versions early, not a six-month tunnel.">Des versions utilisables tôt, pas un tunnel de six mois.</p>
+      </div>
+      <div class="step">
+        <span class="step-ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.6 8.4h3l1.6-4 2.4 7.6 1.8-3.6h3.6"/></svg></span>
+        <div class="step-n">05</div>
+        <h4 data-fr="Suivi" data-en="Support">Suivi</h4>
+        <p data-fr="L'outil vit après la mise en ligne, et vous n'êtes pas seul." data-en="The tool lives on after launch, and you are not alone with it.">L'outil vit après la mise en ligne, et vous n'êtes pas seul.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ À PROPOS ══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shead rv" id="apropos">
+      <h2 data-fr="À propos" data-en="About">À propos</h2>
+      <p class="sub meas" data-fr="Quinze ans à livrer du logiciel qui tourne en production." data-en="Fifteen years shipping software that runs in production.">Quinze ans à livrer du logiciel qui tourne en production.</p>
+    </div>
+
+    <article class="two two-bio rv">
+      <div class="two-l">
+        <p class="promise" data-fr="Architecte logiciel &amp; développeur fullstack — J'ai aidé des entreprises et scale-ups, en France comme à l'international, à concevoir des applications sur-mesure, automatiser leurs flux grâce à l'IA et sécuriser leur passage à l'échelle." data-en="Software architect &amp; fullstack developer — I have helped companies and scale-ups, in France and abroad, design custom applications, automate their workflows with AI and secure their move to scale.">Architecte logiciel &amp; développeur fullstack — J'ai aidé des entreprises et scale-ups, en France comme à l'international, à concevoir des applications sur-mesure, automatiser leurs flux grâce à l'IA et sécuriser leur passage à l'échelle.</p>
+        <div class="bio-cta">
+          <a href="/cv/cv-Mihaja-Herinjaka-Rasolo.pdf" class="btn btn-solid" data-fr="CV PDF" data-en="CV PDF">CV PDF</a>
+          <a href="/cv/" class="btn" data-fr="CV en ligne" data-en="CV online">CV en ligne</a>
+        </div>
+      </div>
+      <div>
+        <div class="tl">
+          <div class="tl-i fin">
+            <div class="tl-k">Lemontech · 2021 — 2026</div>
+            <p class="tl-t">Lead Developer · Mably, France</p>
+          </div>
+          <div class="tl-i">
+            <div class="tl-k">Spirion · 2022 — 2026</div>
+            <p class="tl-t" data-fr="Fullstack Developer · Freelance, Upwork" data-en="Fullstack Developer · Freelance, Upwork">Fullstack Developer · Freelance, Upwork</p>
+          </div>
+          <div class="tl-i">
+            <div class="tl-k">Tech Tablet · 2017 — 2021</div>
+            <p class="tl-t">Lead Developer · Roanne, France</p>
+          </div>
+          <div class="tl-i">
+            <div class="tl-k">Surmezur · 2009 — 2015</div>
+            <p class="tl-t">Web Developer · PACA, France</p>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section class="inv">
+  <div class="wrap inv-in">
+    <div class="shead rv" id="contact" style="border-top:0;padding-top:0;">
+      <h2>Contact</h2>
+      <p class="sub meas" data-fr="Parlons de ce qui vous fait perdre du temps." data-en="Let's talk about what is costing you time.">Parlons de ce qui vous fait perdre du temps.</p>
+      <p class="lede meas" data-fr="Premier échange sans engagement : vous décrivez votre situation, je vous dis si je suis la bonne personne." data-en="A first no-strings conversation: you describe your situation, I tell you whether I am the right person.">Premier échange sans engagement : vous décrivez votre situation, je vous dis si je suis la bonne personne.</p>
+      <p class="cname rv">Mihaja Herinjaka Rasolo</p>
+      <p class="crole rv" data-fr="Architecte logiciel &amp; développeur fullstack" data-en="Software architect &amp; fullstack developer">Architecte logiciel &amp; développeur fullstack</p>
+      <p class="cid rv"><span><b>NIF</b> 4019793045</span><span><b>STAT</b> 63121 12 2026 0 01087</span></p>
+      <div class="clinks">
+        <a title="E-mail — xanaviarta@gmail.com" aria-label="E-mail — xanaviarta@gmail.com" href="mailto:xanaviarta@gmail.com"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.4" y="3.2" width="13.2" height="9.6"/><path d="M1.7 4 8 8.6 14.3 4"/></svg></a>
+        <a title="WhatsApp — +261 34 08 071 20" aria-label="WhatsApp — +261 34 08 071 20" href="https://wa.me/261340807120" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8.02 1.6a6.36 6.36 0 0 0-5.4 9.72l-.93 3.4 3.48-.91A6.36 6.36 0 1 0 8.02 1.6Zm0 1.16a5.2 5.2 0 1 1-2.67 9.66l-.2-.12-2.06.54.55-2.01-.13-.21A5.2 5.2 0 0 1 8.02 2.76Zm-2.4 2.6c-.12 0-.31.04-.47.22-.16.18-.62.6-.62 1.47 0 .86.63 1.7.72 1.81.09.12 1.22 1.94 3.02 2.64 1.5.59 1.8.47 2.13.44.32-.03 1.04-.42 1.19-.83.15-.41.15-.77.1-.84-.04-.07-.16-.12-.34-.2-.18-.1-1.04-.52-1.2-.58-.16-.06-.28-.09-.4.09-.11.18-.45.57-.55.69-.1.12-.2.13-.38.04a4.8 4.8 0 0 1-1.41-.87 5.32 5.32 0 0 1-.98-1.22c-.1-.18-.01-.28.08-.37.08-.08.18-.21.27-.32.09-.11.12-.19.18-.31.06-.12.03-.23-.02-.32-.04-.09-.4-.96-.55-1.31-.14-.34-.29-.3-.4-.3h-.34Z"/></svg></a>
+      </div>
+    </div>
+
+    <footer class="band-foot rv">
+      <p>© <span id="yr"></span> <span data-fr="Antananarivo, Madagascar · Télétravail" data-en="Antananarivo, Madagascar · Remote">Antananarivo, Madagascar · Télétravail</span></p>
+      <p class="foot-ver">v2.0</p>
+    </footer>
+  </div>
+</section>
+
+<a class="avail-fx" href="#contact">
+  <span class="avail-lb">
+    <span class="lb-ok" data-fr="Disponible pour de nouveaux projets" data-en="Available for new projects">Disponible pour de nouveaux projets</span>
+    <span class="lb-ko" data-fr="Complet pour le moment" data-en="Fully booked right now">Complet pour le moment</span>
+  </span>
+  <span class="avail-dot" aria-hidden="true"></span>
+</a>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 12), {passive:true});
+
+/* Inertie de scroll — la page continue quelques dixiemes apres l'arret de la
+   molette, puis se pose. On n'anime pas la page en transform : on pilote le
+   scroll natif image par image, donc position:fixed, sticky, ancres et
+   IntersectionObserver continuent de fonctionner normalement.
+   Coupe au tactile (le telephone a deja son inertie) et si l'utilisateur
+   demande moins d'animation. */
+(() => {
+  if (!matchMedia('(pointer:fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  const GLISSE = .052;            // plus bas = plus long a se poser
+  const max = () => document.documentElement.scrollHeight - innerHeight;
+  let cible = scrollY, courant = scrollY, anime = false;
+
+  function pose(){
+    courant += (cible - courant) * GLISSE;
+    if (Math.abs(cible - courant) < .4){ courant = cible; anime = false; }
+    scrollTo({top: Math.round(courant), behavior: 'instant'});
+    if (anime) requestAnimationFrame(pose);
+  }
+
+  addEventListener('wheel', e => {
+    if (e.ctrlKey) return;                                   // zoom navigateur
+    e.preventDefault();
+    const pas = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1;
+    cible = Math.min(Math.max(cible + e.deltaY * pas, 0), max());
+    if (!anime){ anime = true; courant = scrollY; requestAnimationFrame(pose); }
+  }, {passive:false});
+
+  /* toute autre source reprend la main : clavier, barre de defilement, et les
+     ancres du menu, qui gardent le scroll-behavior:smooth du CSS */
+  addEventListener('scroll', () => { if (!anime) cible = courant = scrollY; }, {passive:true});
+  addEventListener('resize', () => { cible = courant = scrollY; });
+})();
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (!e.isIntersecting) return;
+    e.target.style.transitionDelay = (i * 55) + 'ms';
+    e.target.classList.add('seen');
+    io.unobserve(e.target);
+  });
+}, {threshold:.1, rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* i18n — EN encore brut, a raffiner une fois le FR fige */
+const seg = document.getElementById('seg');
+function setLang(lang){
+  document.documentElement.lang = lang;
+  seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.lang === lang));
+  document.querySelectorAll('[data-fr], [data-fr-html]').forEach(el => {
+    const html = el.dataset[lang + 'Html'];
+    if (html !== undefined) { el.innerHTML = html; return; }
+    const txt = el.dataset[lang];
+    if (txt !== undefined) el.textContent = txt;
+  });
+  try { localStorage.setItem('lang', lang); } catch(e) {}
+}
+seg.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (b) setLang(b.dataset.lang);
+});
+try { if (localStorage.getItem('lang') === 'en') setLang('en'); } catch(e) {}
+</script>
+</body>
+</html>
