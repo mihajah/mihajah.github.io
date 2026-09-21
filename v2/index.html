@@ -123,6 +123,7 @@ a{color:inherit;text-decoration:none;}
 .hero{padding-top:46px;}
 .hero-in{padding:clamp(4rem,10vw,8rem) 0 clamp(2.4rem,4vw,3.8rem);text-align:center;display:flex;flex-direction:column;align-items:center;}
 .hero h1{font-size:clamp(2.6rem,8.2vw,6.8rem);max-width:16ch;line-height:.98;}
+.hero-kick{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim-2);margin-bottom:1.5rem;}
 .hero-lede{margin-top:1.8rem;color:var(--dim);}
 .hero-cta{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:2.4rem;}
 .hero-in .hero-cta{justify-content:center;}
@@ -169,8 +170,9 @@ a{color:inherit;text-decoration:none;}
 @media(prefers-reduced-motion:reduce){
   .avail-dot::before,.avail-dot::after{animation:none;opacity:0;}
 }
-.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule-strong);}
-@media(max-width:700px){ .stats{grid-template-columns:1fr;} }
+.stats{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--rule-strong);}
+@media(max-width:980px){ .stats{grid-template-columns:repeat(3,1fr);} .stat:nth-child(3n){border-right:0;} .stat:nth-child(-n+3){border-bottom:1px solid var(--rule);} }
+@media(max-width:700px){ .stats{grid-template-columns:repeat(2,1fr);} .stat:nth-child(2n){border-right:0;} .stat:nth-child(3n){border-right:1px solid var(--rule);} }
 .stat{padding:1.4rem 1.2rem;border-right:1px solid var(--rule);text-align:center;}
 .stat:last-child{border-right:0;}
 @media(max-width:700px){ .stat{border-right:0;border-bottom:1px solid var(--rule);} }
@@ -466,8 +468,9 @@ a{color:inherit;text-decoration:none;}
 <!-- ══ HERO ══ -->
 <header class="hero">
   <div class="wrap hero-in">
-    <h1 class="rv" data-fr="Du problème métier à l'outil qui tourne, et qui suit votre croissance." data-en="From the business problem to the tool that runs — and grows with you.">Du problème métier à l'outil qui tourne, et qui suit votre croissance.</h1>
-    <p class="hero-lede meas rv" data-fr="Applications métier sur-mesure et automatisations par intelligence artificielle, pour vous libérer des tâches répétitives." data-en="Custom business applications and AI-driven automation, to free you from repetitive work.">Applications métier sur-mesure et automatisations par intelligence artificielle, pour vous libérer des tâches répétitives.</p>
+    <p class="hero-kick rv" data-fr="Architecte logiciel &amp; développeur fullstack" data-en="Software architect &amp; fullstack developer">Architecte logiciel &amp; développeur fullstack</p>
+    <h1 class="rv" data-fr="Vos problèmes métier, transformés en applications taillées pour votre croissance." data-en="Your business problems, turned into applications built to scale.">Vos problèmes métier, transformés en applications taillées pour votre croissance.</h1>
+    <p class="hero-lede meas rv" data-fr="Pour les dirigeants qui ont dépassé le tableur et les outils du marché." data-en="For business owners who have outgrown spreadsheets and off-the-shelf tools.">Pour les dirigeants qui ont dépassé le tableur et les outils du marché.</p>
     <div class="hero-cta rv">
       <a href="#services" class="btn btn-solid" data-fr="Découvrir les services" data-en="Explore services">Découvrir les services</a>
       <a href="#contact" class="btn" data-fr="Parler de votre projet" data-en="Discuss your project">Parler de votre projet</a>
@@ -476,8 +479,10 @@ a{color:inherit;text-decoration:none;}
   <div class="wrap">
     <div class="stats rv">
       <div class="stat"><div class="stat-v">15+</div><div class="stat-l" data-fr="ans d'expérience" data-en="years of experience">ans d'expérience</div></div>
-      <div class="stat"><div class="stat-v">[XX]</div><div class="stat-l" data-fr="[PLACEHOLDER — stat]" data-en="[PLACEHOLDER — stat]">[PLACEHOLDER — stat]</div></div>
-      <div class="stat"><div class="stat-v">[XX]</div><div class="stat-l" data-fr="[PLACEHOLDER — stat]" data-en="[PLACEHOLDER — stat]">[PLACEHOLDER — stat]</div></div>
+      <div class="stat"><div class="stat-v">11</div><div class="stat-l" data-fr="ans sur Laravel" data-en="years with Laravel">ans sur Laravel</div></div>
+      <div class="stat"><div class="stat-v">5</div><div class="stat-l" data-fr="ans sur Vue.js" data-en="years with Vue.js">ans sur Vue.js</div></div>
+      <div class="stat"><div class="stat-v">3</div><div class="stat-l" data-fr="ans sur l'IA générative" data-en="years with generative AI">ans sur l'IA générative</div></div>
+      <div class="stat"><div class="stat-v">20+</div><div class="stat-l" data-fr="projets livrés" data-en="projects shipped">projets livrés</div></div>
     </div>
   </div>
 </header>
@@ -488,7 +493,7 @@ a{color:inherit;text-decoration:none;}
     <div class="shead rv" id="services">
       <h2 data-fr="Services" data-en="Services">Services</h2>
       <p class="sub meas" data-fr="Deux façons de vous faire gagner du temps." data-en="Two ways to win back your time.">Deux façons de vous faire gagner du temps.</p>
-      <p class="lede meas" data-fr="[PLACEHOLDER — chapô] Chaque mission part d'un problème concret, pas d'une technologie." data-en="[PLACEHOLDER — intro] Every engagement starts from a real problem, not from a technology.">[PLACEHOLDER — chapô] Chaque mission part d'un problème concret, pas d'une technologie.</p>
+      <p class="lede meas" data-fr="Chaque mission part d'un problème concret, pas d'une technologie." data-en="Every engagement starts from a real problem, not from a technology.">Chaque mission part d'un problème concret, pas d'une technologie.</p>
     </div>
 
     <!-- service 01 -->
@@ -513,7 +518,9 @@ a{color:inherit;text-decoration:none;}
             <p class="tl-t" data-fr="Des traitements qui prenaient plusieurs jours se font en quelques minutes. Vos équipes retrouvent leur temps, et vous décidez sur des données fraîches." data-en="Work that took days now takes minutes. Your team gets its time back, and you decide on fresh data.">Des traitements qui prenaient plusieurs jours se font en quelques minutes. Vos équipes retrouvent leur temps, et vous décidez sur des données fraîches.</p>
           </div>
         </div>
-        <a class="seelink" href="#cas-crawler"><span data-fr="En pratique" data-en="In practice">En pratique</span> : Crawler IA<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
+        <p class="seelist"><span data-fr="En pratique" data-en="In practice">En pratique</span> :
+          <a href="#cas-crawler">Crawler IA<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a><span class="sp">/</span><a href="#cas-vecto">Tarification par IA<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a><span class="sp">/</span><a href="#cas-agent">Agent immobilier IA<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
+        </p>
       </div>
     </article>
 
@@ -540,7 +547,7 @@ a{color:inherit;text-decoration:none;}
           </div>
         </div>
         <p class="seelist"><span data-fr="En pratique" data-en="In practice">En pratique</span> :
-          <a href="#cas-ecommerce">E-commerce BtoC / BtoB<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a><span class="sp">/</span><a href="#cas-editeur">Éditeur graphique<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
+          <a href="#cas-commande">Prise de commande hors ligne<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a><span class="sp">/</span><a href="#cas-ecommerce">E-commerce BtoC / BtoB<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a><span class="sp">/</span><a href="#cas-editeur">Éditeur graphique<svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a>
         </p>
       </div>
     </article>
@@ -552,7 +559,7 @@ a{color:inherit;text-decoration:none;}
   <div class="wrap">
     <div class="shead rv" id="cas">
       <h2 data-fr="Réalisations" data-en="Case studies">Réalisations</h2>
-      <p class="sub meas" data-fr="Des projets livrés, et ce qu'ils ont changé." data-en="Shipped projects, and what they changed.">Des projets livrés, et ce qu'ils ont changé.</p>
+      <p class="sub meas" data-fr="Quelques projets livrés, et ce qu'ils ont changé." data-en="A few shipped projects, and what they changed.">Quelques projets livrés, et ce qu'ils ont changé.</p>
     </div>
 
     <article class="two rv" id="cas-crawler">
@@ -573,7 +580,7 @@ a{color:inherit;text-decoration:none;}
             </div>
             <div class="tech-r">
               <div class="tech-k">IA</div>
-              <div class="chips"><span class="chip">Agents LLM</span><span class="chip">Serveurs MCP</span><span class="chip">RAG</span></div>
+              <div class="chips"><span class="chip">Agents LLM</span><span class="chip">Serveurs MCP</span></div>
             </div>
             <div class="tech-r">
               <div class="tech-k">Back</div>
@@ -855,6 +862,44 @@ a{color:inherit;text-decoration:none;}
       </div>
     </article>
 
+    <article class="two rv" id="cas-agent">
+      <div class="two-l">
+        <span class="idx">09</span>
+        <h3 data-fr="Agent immobilier IA" data-en="AI estate agent">Agent immobilier IA</h3>
+      </div>
+      <div>
+        <p class="dim meas" data-fr="Application mobile qui met en relation vendeurs et acheteurs : un agent conversationnel comprend ce que cherche l'acheteur et répond à ses questions à partir des documents du bien, ou des informations saisies par le propriétaire quand il n'y en a pas. Dès que l'intérêt est confirmé, l'app déclenche elle-même la mise en relation avec le vendeur." data-en="Mobile app that connects sellers and buyers: a conversational agent understands what the buyer is after and answers their questions from the property's own documents, or from the details the owner filled in when there are none. As soon as interest is confirmed, the app triggers the introduction to the seller by itself.">Application mobile qui met en relation vendeurs et acheteurs : un agent conversationnel comprend ce que cherche l'acheteur et répond à ses questions à partir des documents du bien, ou des informations saisies par le propriétaire quand il n'y en a pas. Dès que l'intérêt est confirmé, l'app déclenche elle-même la mise en relation avec le vendeur.</p>
+        <p class="kpi" style="margin-top:1rem;" data-fr="Plus de filtres à régler : une phrase suffit, l'IA prend le relais" data-en="No more filters to set: one sentence is enough, the AI takes over">Plus de filtres à régler : une phrase suffit, l'IA prend le relais</p>
+        <details class="disc">
+          <summary><span class="sign"></span><span data-fr="Détails techniques" data-en="Technical details">Détails techniques</span></summary>
+          <div class="disc-body">
+          <div class="tech">
+            <div class="tech-r">
+              <div class="tech-k">Architecture</div>
+              <div class="chips"><span class="chip">API REST</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">IA</div>
+              <div class="chips"><span class="chip">Agents LLM</span><span class="chip">RAG</span><span class="chip">Vectorisation</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Front</div>
+              <div class="chips"><span class="chip">Flutter</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">Back</div>
+              <div class="chips"><span class="chip">Laravel</span></div>
+            </div>
+            <div class="tech-r">
+              <div class="tech-k">DB</div>
+              <div class="chips"><span class="chip">Supabase</span><span class="chip">pgvector</span></div>
+            </div>
+          </div>
+          </div>
+        </details>
+      </div>
+    </article>
+
     <div class="socle rv" id="socle">
       <div class="socle-in">
         <div class="socle-t">
@@ -883,7 +928,7 @@ a{color:inherit;text-decoration:none;}
     <div class="shead rv" id="methode">
       <h2 data-fr="Méthode" data-en="Process">Méthode</h2>
       <p class="sub meas" data-fr="Comment on travaille ensemble." data-en="How we work together.">Comment on travaille ensemble.</p>
-      <p class="lede meas" data-fr="[PLACEHOLDER — chapô méthode] À définir : rassurer le prospect qui n'a jamais fait développer sur-mesure." data-en="[PLACEHOLDER — process intro] To define: reassure the prospect who has never commissioned custom software.">[PLACEHOLDER — chapô méthode] À définir : rassurer le prospect qui n'a jamais fait développer sur-mesure.</p>
+      <p class="lede meas" data-fr="Vous ne découvrez pas le produit à la livraison : vous le voyez avancer, et vous validez au fur et à mesure." data-en="You don't discover the product on delivery day: you watch it take shape, and you approve as it goes.">Vous ne découvrez pas le produit à la livraison : vous le voyez avancer, et vous validez au fur et à mesure.</p>
     </div>
     <div class="steps rv">
       <div class="step">
