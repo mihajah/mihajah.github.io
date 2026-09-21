@@ -85,6 +85,69 @@ a{color:inherit;text-decoration:none;}
 .nav-links a{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);transition:color .18s var(--ease);}
 .nav-links a:hover{color:var(--fg);}
 @media(max-width:900px){ .nav-links{display:none;} }
+
+/* Menu mobile — bouton en colonne 1, panneau plein ecran en noir.
+   Le bouton n'existe qu'en dessous de 900px, la ou .nav-links disparait. */
+.burger{
+  grid-column:1;justify-self:start;display:none;
+  appearance:none;background:transparent;border:0;cursor:pointer;
+  width:34px;height:34px;margin-left:-8px;padding:0;
+  align-items:center;justify-content:center;color:var(--fg);
+}
+@media(max-width:900px){ .burger{display:flex;} }
+.burger span{
+  display:block;position:relative;width:19px;height:1px;background:currentColor;
+  transition:transform .3s var(--ease),opacity .2s var(--ease);
+}
+.burger span::before,.burger span::after{
+  content:'';position:absolute;left:0;width:19px;height:1px;background:currentColor;
+  transition:transform .3s var(--ease);
+}
+.burger span::before{top:-6px;}
+.burger span::after{top:6px;}
+.nav.stuck .burger{color:var(--inv-fg);}
+/* ouvert : la barre du milieu s'efface, les deux autres se croisent */
+body.menu-open .burger{color:var(--inv-fg);}
+body.menu-open .burger span{background:transparent;}
+body.menu-open .burger span::before{transform:translateY(6px) rotate(45deg);}
+body.menu-open .burger span::after{transform:translateY(-6px) rotate(-45deg);}
+/* la barre passe en noir pendant l'ouverture, pour ne faire qu'un avec le panneau */
+body.menu-open .nav{background:var(--inv-bg);backdrop-filter:none;-webkit-backdrop-filter:none;}
+body.menu-open .nav .lang button{color:var(--inv-dim);}
+body.menu-open .nav .lang button.on{color:var(--inv-fg);}
+body.menu-open .nav .flag{outline-color:rgba(242,242,242,.3);}
+/* la pastille de disponibilite s'efface, elle passerait par-dessus le panneau */
+body.menu-open .avail-fx{opacity:0;pointer-events:none;}
+
+.mmenu{
+  position:fixed;left:0;top:46px;bottom:0;width:80%;z-index:99;
+  background:var(--inv-bg);color:var(--inv-fg);
+  display:flex;flex-direction:column;
+  padding:1.6rem var(--gut) 0;overflow-y:auto;
+  transform:translateX(-100%);visibility:hidden;
+  transition:transform .42s var(--ease),visibility .42s;
+}
+body.menu-open .mmenu{transform:none;visibility:visible;}
+/* voile sur la bande de page laissee visible : elle reste la, mais en retrait */
+.mscrim{
+  position:fixed;inset:46px 0 0 0;z-index:98;background:rgba(10,10,10,.5);
+  opacity:0;visibility:hidden;transition:opacity .42s var(--ease),visibility .42s;
+}
+body.menu-open .mscrim{opacity:1;visibility:visible;}
+.mmenu a{
+  display:flex;align-items:baseline;gap:1rem;
+  padding:1.15rem 0;border-bottom:1px solid rgba(242,242,242,.12);
+  color:var(--inv-fg);font-size:1.5rem;letter-spacing:-.02em;
+}
+.mmenu a:first-child{border-top:1px solid rgba(242,242,242,.12);}
+.mmenu a i{
+  font-style:normal;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+  color:var(--inv-dim);
+}
+@media(prefers-reduced-motion:reduce){
+  .burger span,.burger span::before,.burger span::after{transition:none;}
+  .mmenu,.mscrim{transition:visibility .01s;}
+}
 .lang{grid-column:3;justify-self:end;display:flex;gap:.1rem;}
 .lang button{
   appearance:none;background:transparent;border:0;cursor:pointer;font-family:var(--mono);
@@ -452,6 +515,7 @@ a{color:inherit;text-decoration:none;}
 <!-- ══ NAV ══ -->
 <nav class="nav" id="nav">
   <div class="nav-in">
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mmenu" aria-label="Menu"><span></span></button>
     <div class="nav-links">
       <a href="#services" data-fr="Services" data-en="Services">Services</a>
       <a href="#cas" data-fr="Réalisations" data-en="Case studies">Réalisations</a>
@@ -465,6 +529,15 @@ a{color:inherit;text-decoration:none;}
     </div>
   </div>
 </nav>
+
+<div class="mscrim" id="mscrim"></div>
+<div class="mmenu" id="mmenu">
+    <a href="#services"><i>01</i><span data-fr="Services" data-en="Services">Services</span></a>
+    <a href="#cas"><i>02</i><span data-fr="Réalisations" data-en="Case studies">Réalisations</span></a>
+    <a href="#methode"><i>03</i><span data-fr="Méthode" data-en="Process">Méthode</span></a>
+    <a href="#apropos"><i>04</i><span data-fr="À propos" data-en="About">À propos</span></a>
+    <a href="#contact"><i>05</i><span data-fr="Contact" data-en="Contact">Contact</span></a>
+</div>
 
 <!-- ══ HERO ══ -->
 <header class="hero">
@@ -1046,6 +1119,28 @@ a{color:inherit;text-decoration:none;}
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 const nav = document.getElementById('nav');
+
+/* Menu mobile. Le panneau vit hors de la nav pour pouvoir couvrir la page ;
+   l'etat est porte par <body>, ce qui laisse le CSS piloter la barre, le
+   bouton et la pastille d'un seul coup. */
+(() => {
+  const btn = document.getElementById('burger');
+  const menu = document.getElementById('mmenu');
+  if (!btn || !menu) return;
+  const set = open => {
+    document.body.classList.toggle('menu-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  btn.addEventListener('click', () => set(!document.body.classList.contains('menu-open')));
+  menu.addEventListener('click', e => { if (e.target.closest('a')) set(false); });
+  const scrim = document.getElementById('mscrim');
+  if (scrim) scrim.addEventListener('click', () => set(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  /* le menu n'existe que sous 900px : si on elargit la fenetre, on referme,
+     sinon le scroll resterait bloque sur une page sans bouton pour rouvrir */
+  matchMedia('(min-width:901px)').addEventListener('change', e => { if (e.matches) set(false); });
+})();
 addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 12), {passive:true});
 
 /* Inertie de scroll — la page continue quelques dixiemes apres l'arret de la
